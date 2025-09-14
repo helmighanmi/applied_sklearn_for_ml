@@ -168,10 +168,34 @@ custom_pred = (scores < custom_thr).astype(int)  # 1=anomaly, 0=normal
 
 ---
 
+
+---
+
+## Docker
+
+Build the image from the repository root (where the `Dockerfile` lives):
+
+```bash
+# Build the image
+docker build -t anomaly-iforest:latest .
+```
+
+Run **training** (mount local `data/` and `models/` into the container):
+
+```bash
+docker run --rm   -v "$PWD/data:/app/data"   -v "$PWD/models:/app/models"   anomaly-iforest:latest   scripts/train.py --data data/train.csv --config configs/config.yaml
+```
+
+Run **inference** (the scored CSV will be written back to your host):
+
+```bash
+docker run --rm   -v "$PWD/data:/app/data"   -v "$PWD/models:/app/models"   -v "$PWD:/app"   anomaly-iforest:latest   scripts/inference.py --data data/new_data.csv --config configs/config.yaml --out scored.csv
+```
+
+
 ## References
 - scikit‑learn IsolationForest: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html
 - Outlier detection overview: https://scikit-learn.org/stable/modules/outlier_detection.html
 - Plotly Express: https://plotly.com/python/plotly-express/
 
----
 
