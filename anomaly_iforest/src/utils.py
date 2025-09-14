@@ -57,3 +57,14 @@ def default_meta(cfg: Dict, model_path: str | Path) -> Dict:
         "sklearn_version": sklearn.__version__,
         "model_path": str(model_path),
     }
+
+
+def annotate_with_detector(df, pipe, features, score_col="anomaly_score", pred_col="anomaly_pred", flag_col="anomaly_flag"):
+    X = df[features]
+    scores = pipe.decision_function(X)
+    preds = pipe.predict(X)
+    out = df.copy()
+    out[score_col] = scores
+    out[pred_col] = preds
+    out[flag_col] = (out[pred_col] == -1)
+    return out

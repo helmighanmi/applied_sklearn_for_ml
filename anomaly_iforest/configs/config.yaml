@@ -1,7 +1,35 @@
 features: [NPHI, RHOB]
-contamination: 0.1
+
+algo: iforest          # one of: iforest | ocsvm | lof | elliptic | pca
+algo_params:
+  contamination: 0.10  # used by iforest/elliptic; for ocsvm set nu instead
+
+# OC-SVM example:
+# algo: ocsvm
+# algo_params:
+#   kernel: rbf
+#   nu: 0.05
+#   gamma: scale
+
+# LOF example:
+# algo: lof
+# algo_params:
+#   n_neighbors: 20
+#   novelty: true   # IMPORTANT for inference
+
+# Elliptic example:
+# algo: elliptic
+# algo_params:
+#   contamination: 0.10
+#   support_fraction: null
+
+# PCA example:
+# algo: pca
+# algo_params:
+#   n_components: 0.95   # or an int
+#   contamination: 0.10   # for thresholding
 random_state: 42
 imputer_strategy: median
-scaler: standard # one of: standard | minmax | robust
+scaler: standard
 model_path: models/iforest_pipeline.joblib
 meta_path: models/iforest_meta.json
